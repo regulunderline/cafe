@@ -1,9 +1,11 @@
-POST http://localhost:3001/api/menu
+POST http://localhost:3001/api/users
 Content-Type: application/json
 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxvQGdtYWlsLmNvbSIsImlkIjozLCJpYXQiOjE3NjM0ODQyOTN9.b-mPQgrJd8walRwPjKsN1A0cTc3Ew9cd1PZKx83DuzY'
 
 {
-  "name": "bread",
-  "price": 100,
-  "weight": 200
+  "username": "wow",
+  "name": "wow",
+  "password": "111",
+  "staff": true,
+  "secret": "1"
 }

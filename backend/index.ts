@@ -1,12 +1,15 @@
 import express from 'express'
 
-import menuRouter from './src/routes/menu' 
+import { PORT } from './src/utils/config'
+
+import menuRouter from './src/routes/menuItems' 
+import userRouter from './src/routes/users' 
+
+import { connectToDatabase } from './src/utils/db'
 
 const app = express()
 
 app.use(express.json())
-
-const PORT = 3001
 
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here')
@@ -14,7 +17,13 @@ app.get('/api/ping', (_req, res) => {
 })
 
 app.use('/api/menu', menuRouter)
+app.use('/api/users', userRouter)
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+const start = async () => {
+  await connectToDatabase()
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
+}
+
+void start()

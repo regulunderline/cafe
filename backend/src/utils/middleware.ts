@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+import { ValidationError } from 'sequelize'
 
 export const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunction) => {
   const setStatus = () => {
@@ -10,6 +11,9 @@ export const errorHandler = (error: Error, _req: Request, res: Response, next: N
       default:
         return 520
     }
+  }
+  if (error instanceof ValidationError) {
+    res.status(401).json(error.errors.map(e => e.message))
   }
   res.status(setStatus()).json({ error: error.message })
   next(error)

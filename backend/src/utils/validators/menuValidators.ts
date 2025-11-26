@@ -1,12 +1,6 @@
-import { NewMenuItem, MenuItemEntries } from '../types'
+import { NewMenuItem, MenuItemEntries } from '../../types'
 
-const isString = (text: unknown): text is string => {
-  return typeof text === 'string' || text instanceof String;
-}
-
-const isNumber = (number: unknown): number is number => {
- return typeof number === 'number';
-}
+import { isString, isNumber } from './helpers'
 
 const parseName = (name:unknown): string =>  {
   if(!name || !isString(name) || name.length > 255) {
@@ -62,7 +56,7 @@ export const toNewMenuItem = (object: unknown): NewMenuItem => {
   return newMenuItem
 }
 
-export const toUpdateInfo = (object: unknown): MenuItemEntries => {
+export const toUpdateMenuItemInfo = (object: unknown): MenuItemEntries => {
   if ( !object || typeof object !== 'object' ) {
     throw new Error('Incorrect or missing data', { cause: 401 });
   }

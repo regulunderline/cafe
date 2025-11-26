@@ -6,7 +6,8 @@
     "tsc": "tsc",
     "dev": "ts-node-dev index.ts",
     "lint": "eslint .",
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "migration:down": "ts-node-dev src/utils/rollback.ts"
   },
   "author": "",
   "license": "ISC",
@@ -17,12 +18,17 @@
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.1",
+    "@types/pg": "^8.15.6",
     "eslint": "^9.39.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.47.0"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7",
+    "umzug": "^3.8.2"
   }
 }

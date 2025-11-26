@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "username": "regul",
+    "password": "111",
+    "name": "regul",
+    "staff": true,
+    "admin": true,
+    "created_at": "2025-11-23T10:12:00.605Z",
+    "updated_at": "2025-11-23T10:12:00.605Z"
+  },
+  {
+    "id": 2,
+    "username": "admin",
+    "password": "111",
+    "name": "admin",
+    "staff": true,
+    "admin": true,
+    "created_at": "2025-11-23T10:12:00.605Z",
+    "updated_at": "2025-11-23T10:12:00.605Z"
+  },
+  {
+    "id": 3,
+    "username": "chef",
+    "password": "111",
+    "name": "Luis",
+    "staff": true,
+    "admin": false,
+    "created_at": "2025-11-23T10:12:00.605Z",
+    "updated_at": "2025-11-23T10:12:00.605Z"
+  },
+  {
+    "id": 4,
+    "username": "cook",
+    "password": "111",
+    "name": "John",
+    "staff": true,
+    "admin": false,
+    "created_at": "2025-11-23T10:12:00.605Z",
+    "updated_at": "2025-11-23T10:12:00.605Z"
+  },
+  {
+    "id": 5,
+    "username": "user",
+    "password": "111",
+    "name": "user",
+    "staff": false,
+    "admin": false,
+    "created_at": "2025-11-23T10:12:00.605Z",
+    "updated_at": "2025-11-23T10:12:00.605Z"
+  }
+]
