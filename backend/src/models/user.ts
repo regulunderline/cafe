@@ -1,8 +1,21 @@
-import { Model, DataTypes } from 'sequelize'
+import { Model, DataTypes, Optional } from 'sequelize'
 
 import { sequelize } from '../utils/db'
 
-class User extends Model {}
+import { UserType } from '../types'
+
+type UserAttributes = Optional<UserType, 'id'>
+
+class User extends Model<UserType, UserAttributes> implements UserType{
+  id!: number
+  username!: string
+  password!: string
+  name!: string
+  staff!: boolean
+  admin!: boolean
+  created_at!: Date
+  updated_at!: Date
+}
 
 User.init({
   id: {

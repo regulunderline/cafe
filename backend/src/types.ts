@@ -20,7 +20,16 @@ export interface MenuItemEntries {
   ingredients?: string
 }
 
-export interface User {
+export interface UserType {
+  id: number
+  username: string
+  password: string
+  name: string
+  staff: boolean
+  admin: boolean
+}
+
+export interface UserFields {
   id: number
   username: string
   password: string
@@ -31,7 +40,7 @@ export interface User {
   updated_at: Date
 }
 
-export type NonSensetiveUser = Omit<User, 'password'>
+export type NonSensetiveUser = Omit<UserFields, 'password'>
 
 export interface NewUser {
   username: string

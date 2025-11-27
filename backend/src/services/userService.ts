@@ -1,38 +1,43 @@
-import usersData from '../../data/users.json'
+// import usersData from '../../data/users.json'
 
 import { ADMIN_SECRET, STUFF_SECRET } from '../utils/config'
 
-import { NewUser, NonSensetiveUser, User, UserEntries } from '../types'
+import { NewUser, NonSensetiveUser, UserEntries } from '../types'
 
-const users: User[] = usersData.map(u => {
-  return { 
-    ...u, 
-    created_at: new Date(u.created_at), 
-    updated_at: new Date(u.updated_at), 
-  }
-})
+import { User } from '../models'
 
-const getAll = (): User[] => {
+// const users: User[] = usersData.map(u => {
+//   return { 
+//     ...u, 
+//     created_at: new Date(u.created_at), 
+//     updated_at: new Date(u.updated_at), 
+//   }
+// })
+
+const getAll = async(): Promise<User[]> => {
+  const users = await User.findAll()
   return users
 }
 
-const getAllNonSensetive = (): NonSensetiveUser[] => {
-  return users.map(({ id, name, username, staff, admin, created_at, updated_at }) => {
-    return { id, name, username, staff, admin, created_at, updated_at }
+const getAllNonSensetive = async (): Promise<NonSensetiveUser[]> => {
+  const users = await User.findAll({attributes: {
+    exclude: ['password']
+  }})
+  return users
+}
+
+const findById = async (id: number): Promise<User | null> => {
+  const user = await User.findByPk(id)
+  return user
+}
+
+const findByIdNonSensative = async (id: number): Promise<NonSensetiveUser | null> => {
+  const user = await User.findByPk(id, {
+    attributes: {
+      exclude: ['password']
+    }
   })
-}
-
-const findById = (id: number): User | undefined => {
-  return users.find(u => u.id === id)
-}
-
-const findByIdNonSensative = (idToFind: number): NonSensetiveUser | undefined => {
-  const user =  users.find(u => u.id === idToFind)
-  if(!user){
-    return undefined
-  }
-  const { id, name, username, staff, admin, created_at, updated_at } = user
-  return { id, name, username, staff, admin, created_at, updated_at }
+  return user
 }
 
 
@@ -49,26 +54,18 @@ const verifyStaffSecret = (secret: unknown): boolean => {
   return true
 }
 
-const addOne = (newUser: NewUser): NonSensetiveUser => {
-  const userToAdd: User = {
-    id: Math.max(...users.map(u => u.id)) + 1,
-    name: newUser.name, 
-    password: newUser.password,
-    username: newUser.username,
+const addOne = async (newUser: NewUser): Promise<NonSensetiveUser> => {
+  const userToAdd = {
+    ...newUser,
     staff: newUser.staff === true ? verifyStaffSecret(newUser.secret) : false,
-    admin: newUser.admin === true ? verifyAdminSecret(newUser.secret) : false,
-    created_at: new Date(),
-    updated_at: new Date() 
+    admin: newUser.admin === true ? verifyAdminSecret(newUser.secret) : false
   }
-
-  users.push(userToAdd)
-
-  const { id, name, username, staff, admin, created_at, updated_at } = userToAdd 
+  const { id, name, username, staff, admin, created_at, updated_at } = await User.create(userToAdd)
   return { id, name, username, staff, admin, created_at, updated_at }
 }
 
-const updateOne = ({ secret, ...updateInfo }: UserEntries, idToUpdate: number): NonSensetiveUser => {
-  const userToUpdate = users.find(i => i.id === idToUpdate)
+const updateOne = async ({ secret, ...updateInfo }: UserEntries, idToUpdate: number): Promise<NonSensetiveUser> => {
+  const userToUpdate = await User.findByPk(idToUpdate)
   if(!userToUpdate){
     throw new Error('user not found', { cause: 404 })
   }
@@ -79,18 +76,21 @@ const updateOne = ({ secret, ...updateInfo }: UserEntries, idToUpdate: number): 
     verifyAdminSecret(secret)
   }
 
-  const updatedUser = { ...userToUpdate, ...updateInfo, updated_at: new Date }
-
-  users.forEach((user, index) => {
-    if(user.id === idToUpdate) {
-      users[index] = updatedUser
-      return
-    }
+  const { id, name, username, staff, admin, created_at, updated_at } = await userToUpdate.update({...updateInfo}, {
+    
   })
 
-  const { id, name, username, staff, admin, created_at, updated_at } = updatedUser
   return { id, name, username, staff, admin, created_at, updated_at }
-} 
+}
+
+const deleteOne = async (id: number) => {
+  const userToDelete = await User.findByPk(id)
+  console.log(userToDelete)
+  if(!userToDelete){
+    throw new Error('user not found', { cause: 404 })
+  }
+  await userToDelete.destroy()
+}
 
 export default {
   getAll,
@@ -98,5 +98,6 @@ export default {
   findById,
   findByIdNonSensative,
   addOne,
-  updateOne
+  updateOne,
+  deleteOne
 }

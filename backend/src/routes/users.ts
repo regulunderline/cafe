@@ -10,13 +10,13 @@ import { NonSensetiveUser } from '../types'
 
 const router = express.Router()
 
-router.get('/', (_req, res: Response<NonSensetiveUser[]>) => {
-  const users: NonSensetiveUser[] = userService.getAllNonSensetive()
+router.get('/', async (_req, res: Response<NonSensetiveUser[]>) => {
+  const users: NonSensetiveUser[] = await userService.getAllNonSensetive()
   res.send(users)
 })
 
-router.get('/:id', (req, res: Response<NonSensetiveUser>) => {
-  const user = userService.findByIdNonSensative(Number(req.params.id))
+router.get('/:id', async (req, res: Response<NonSensetiveUser>) => {
+  const user = await userService.findByIdNonSensative(Number(req.params.id))
 
   if(user) { 
     res.send(user)
@@ -25,22 +25,31 @@ router.get('/:id', (req, res: Response<NonSensetiveUser>) => {
   }
 })
 
-router.post('/', (req, res: Response<NonSensetiveUser>, next) => {
+router.post('/', async (req, res: Response<NonSensetiveUser>, next) => {
   try {
     const newUser = toNewUser(req.body)
 
-    const addedUser = userService.addOne(newUser)
+    const addedUser = await userService.addOne(newUser)
     res.send(addedUser)
   } catch (e){
     next(e)
   }
 })
 
-router.put('/:id', (req, res: Response<NonSensetiveUser>, next) => {
+router.put('/:id', async (req, res: Response<NonSensetiveUser>, next) => {
   try {
     const updateInfo = toUpdateUserInfo(req.body)
-    const updatedUser = userService.updateOne(updateInfo, Number(req.params.id))
+    const updatedUser = await userService.updateOne(updateInfo, Number(req.params.id))
     res.send(updatedUser)
+  } catch (e){
+    next(e)
+  }
+})
+
+router.delete('/:id', async(req, res, next) => {
+  try {
+    await userService.deleteOne(Number(req.params.id))
+    res.status(204).end()
   } catch (e){
     next(e)
   }

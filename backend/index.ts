@@ -2,7 +2,7 @@ import express from 'express'
 
 import { PORT } from './src/utils/config'
 
-import menuRouter from './src/routes/menuItems' 
+import menuItemsRouter from './src/routes/menuItems' 
 import userRouter from './src/routes/users' 
 
 import { connectToDatabase } from './src/utils/db'
@@ -16,7 +16,7 @@ app.get('/api/ping', (_req, res) => {
   res.send('pong')
 })
 
-app.use('/api/menu', menuRouter)
+app.use('/api/menuItems', menuItemsRouter)
 app.use('/api/users', userRouter)
 
 const start = async () => {
