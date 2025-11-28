@@ -58,11 +58,11 @@ const addOne = async (newUser: NewUser): Promise<NonSensetiveUser> => {
   const userToAdd = {
     ...newUser,
     staff: newUser.staff === true ? verifyStaffSecret(newUser.secret) : false,
-    admin: newUser.admin === true ? verifyAdminSecret(newUser.secret) : false
+    admin: newUser.admin === true ? verifyAdminSecret(newUser.secret) : false,
+    disabled: false
   }
-  const { id, name, username, staff, password, admin, created_at, updated_at } = await User.create(userToAdd)
-  console.log(password)
-  return { id, name, username, staff, admin, created_at, updated_at }
+  const { id, name, username, staff, admin, disabled, created_at, updated_at } = await User.create(userToAdd)
+  return { id, name, username, staff, admin, disabled, created_at, updated_at }
 }
 
 const updateOne = async ({ secret, ...updateInfo }: UserEntries, idToUpdate: number): Promise<NonSensetiveUser> => {
@@ -77,11 +77,11 @@ const updateOne = async ({ secret, ...updateInfo }: UserEntries, idToUpdate: num
     verifyAdminSecret(secret)
   }
 
-  const { id, name, username, staff, admin, created_at, updated_at } = await userToUpdate.update({...updateInfo}, {
+  const { id, name, username, staff, admin, disabled, created_at, updated_at } = await userToUpdate.update({...updateInfo}, {
     
   })
 
-  return { id, name, username, staff, admin, created_at, updated_at }
+  return { id, name, username, staff, admin, disabled, created_at, updated_at }
 }
 
 const deleteOne = async (id: number) => {

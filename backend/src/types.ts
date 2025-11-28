@@ -3,21 +3,21 @@ export interface MenuItemType {
   name: string
   price: number
   weight: number
-  ingredients?: string
+  ingredients?: string[]
 }
 
 export interface NewMenuItem {
   name: string
   price: number
   weight: number
-  ingredients?: string
+  ingredients?: string[]
 }
 
 export interface MenuItemEntries {
   name?: string
   price?: number
   weight?: number
-  ingredients?: string
+  ingredients?: string[]
 }
 
 export interface UserType {
@@ -27,6 +27,7 @@ export interface UserType {
   name: string
   staff: boolean
   admin: boolean
+  disabled: boolean
 }
 
 export interface UserFields {
@@ -36,6 +37,7 @@ export interface UserFields {
   name: string
   staff: boolean
   admin: boolean
+  disabled: boolean
   created_at: Date
   updated_at: Date
 }
@@ -62,4 +64,5 @@ export interface UserEntries {
 export interface UserTokenInfo {
   username: string
   id: number
+  sessionId?: number
 }

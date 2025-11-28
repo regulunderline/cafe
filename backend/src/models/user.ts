@@ -13,6 +13,7 @@ class User extends Model<UserType, UserAttributes> implements UserType{
   name!: string
   staff!: boolean
   admin!: boolean
+  disabled!: boolean
   created_at!: Date
   updated_at!: Date
 }
@@ -54,6 +55,11 @@ User.init({
     defaultValue: false
   },
   admin: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  },
+  disabled: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false

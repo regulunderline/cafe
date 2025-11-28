@@ -1,5 +1,8 @@
-import m from './menuItem'
-import u from './user'
+import MenuItem from './menuItem'
+import User from './user'
+import Session from './session'
 
-export class MenuItem extends m {}
-export class User extends u {}
+User.hasMany(Session)
+
+export { MenuItem }
+export { User } 

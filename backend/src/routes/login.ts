@@ -8,6 +8,8 @@ import { SECRET } from '../utils/config'
 
 import { Response } from 'express'
 import { User } from '../models'
+import Session from '../models/session'
+import { UserTokenInfo } from '../types'
 
 const router = express.Router()
 
@@ -39,9 +41,13 @@ router.post('/', async (
     throw new Error('invalid username or password', { cause: 401 })
   }
 
-  const userForToken = {
+  const session = await Session.create( { userId: user.id }) 
+  console.log(session.id, 'a')
+
+  const userForToken: UserTokenInfo = {
     username: user.username,
     id: user.id,
+    sessionId: session.id
   }
 
   const token = jwt.sign(userForToken, SECRET)

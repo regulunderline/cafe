@@ -109,5 +109,9 @@ export const toUserTokenInfo = (object: unknown): UserTokenInfo => {
     username: parseUsername(object.username),
     id: parseId(object.id),
   }
+
+  if(('sessionId' in object) && (typeof object.sessionId === 'number')){
+    userEntries.sessionId = object.sessionId
+  }
   return userEntries
 }

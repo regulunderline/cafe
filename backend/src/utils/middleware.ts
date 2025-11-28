@@ -7,6 +7,7 @@ import { isString } from './validators/helpers'
 import { UserTokenInfo } from '../types'
 import { toUserTokenInfo } from './validators/userValidators'
 import { User } from '../models'
+import Session from '../models/session'
 
 export const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunction) => {
   const setStatus = () => {
@@ -31,12 +32,19 @@ export const errorHandler = (error: Error, _req: Request, res: Response, next: N
   next(error)
 }
 
-export const tokenExtractor = (req: Request & { decodedToken?: UserTokenInfo }, _res: Response, next: NextFunction) => {
+export const tokenExtractor = async (req: Request & { decodedToken?: UserTokenInfo }, _res: Response, next: NextFunction) => {
   const authorization: unknown = req.get('authorization')
   if (authorization && isString(authorization) && authorization.toLowerCase().startsWith('bearer ')) {
     try {
       const decodedTokenInfo = jwt.verify(authorization.substring(7), SECRET)
-      const decodedToken = toUserTokenInfo(decodedTokenInfo)
+      const { sessionId, ...decodedToken } = toUserTokenInfo(decodedTokenInfo)
+
+      const session = await Session.findByPk(sessionId)
+      console.log(session, sessionId)
+      if(!(session && session.userId === decodedToken.id)){
+        throw new Error('session not found', { cause: 400 })
+      }
+
       req.decodedToken = decodedToken
     } catch(e){
       next(e)
