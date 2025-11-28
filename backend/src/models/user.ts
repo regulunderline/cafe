@@ -47,9 +47,6 @@ User.init({
   password: {
     type: DataTypes.TEXT,
     allowNull: false,
-    validate: {
-      is: { args: /^.{3,31}$/i, msg: 'password must be 3 to 31 characters long' }
-    }
   },
   staff: {
     type: DataTypes.BOOLEAN,

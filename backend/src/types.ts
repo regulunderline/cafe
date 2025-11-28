@@ -58,3 +58,8 @@ export interface UserEntries {
   admin?: boolean
   secret?: string
 }
+
+export interface UserTokenInfo {
+  username: string
+  id: number
+}

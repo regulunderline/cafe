@@ -60,7 +60,8 @@ const addOne = async (newUser: NewUser): Promise<NonSensetiveUser> => {
     staff: newUser.staff === true ? verifyStaffSecret(newUser.secret) : false,
     admin: newUser.admin === true ? verifyAdminSecret(newUser.secret) : false
   }
-  const { id, name, username, staff, admin, created_at, updated_at } = await User.create(userToAdd)
+  const { id, name, username, staff, password, admin, created_at, updated_at } = await User.create(userToAdd)
+  console.log(password)
   return { id, name, username, staff, admin, created_at, updated_at }
 }
 
@@ -85,7 +86,7 @@ const updateOne = async ({ secret, ...updateInfo }: UserEntries, idToUpdate: num
 
 const deleteOne = async (id: number) => {
   const userToDelete = await User.findByPk(id)
-  console.log(userToDelete)
+
   if(!userToDelete){
     throw new Error('user not found', { cause: 404 })
   }

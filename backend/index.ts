@@ -3,7 +3,8 @@ import express from 'express'
 import { PORT } from './src/utils/config'
 
 import menuItemsRouter from './src/routes/menuItems' 
-import userRouter from './src/routes/users' 
+import userRouter from './src/routes/users'
+import loginRouter from './src/routes/login' 
 
 import { connectToDatabase } from './src/utils/db'
 
@@ -18,6 +19,7 @@ app.get('/api/ping', (_req, res) => {
 
 app.use('/api/menuItems', menuItemsRouter)
 app.use('/api/users', userRouter)
+app.use('/api/login', loginRouter)
 
 const start = async () => {
   await connectToDatabase()

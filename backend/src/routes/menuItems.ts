@@ -2,11 +2,12 @@ import express from 'express'
 
 import menuService from '../services/menuItemService'
 
-import { errorHandler } from '../utils/middleware'
+import { checkForStaffAndAdmin, errorHandler, tokenExtractor } from '../utils/middleware'
 import { toNewMenuItem, toUpdateMenuItemInfo } from '../utils/validators/menuValidators'
 
-import { Response } from 'express'
+import { Response, Request } from 'express'
 import { MenuItem } from '../models'
+import { UserTokenInfo } from '../types'
 
 const router = express.Router()
 
@@ -25,8 +26,16 @@ router.get('/:id', async (req, res: Response<MenuItem>) => {
   }
 })
 
-router.post('/', async (req, res: Response<MenuItem>, next) => {
+router.post('/', tokenExtractor, checkForStaffAndAdmin, async (
+  req: Request & { decodedToken?: UserTokenInfo, admin?: boolean, staff?: boolean }, 
+  res: Response<MenuItem>, 
+  next
+) => {
   try {
+    if(!(req.staff || req.admin)){
+      throw new Error('only staff and admins can do this', { cause: 401 })
+    }
+
     const newMenuItem = toNewMenuItem(req.body)
 
     const addedMenuItem = await menuService.addMenuItem(newMenuItem)
@@ -37,9 +46,18 @@ router.post('/', async (req, res: Response<MenuItem>, next) => {
   }
 })
 
-router.put('/:id', async (req, res: Response<MenuItem>, next) => {
+router.put('/:id', tokenExtractor, checkForStaffAndAdmin, async (
+  req: Request & { decodedToken?: UserTokenInfo, admin?: boolean, staff?: boolean }, 
+  res: Response<MenuItem>, 
+  next
+) => {
   try {
+    if(!(req.staff || req.admin)){
+      throw new Error('only staff and admins can do this', { cause: 401 })
+    }
+
     const updateInfo = toUpdateMenuItemInfo(req.body)
+
     const updatedMenuItem = await menuService.updateMenuItem(updateInfo, Number(req.params.id))
     res.json(updatedMenuItem)
   } catch (e){
@@ -47,8 +65,16 @@ router.put('/:id', async (req, res: Response<MenuItem>, next) => {
   }
 })
 
-router.delete('/:id', async(req, res, next) => {
+router.delete('/:id', tokenExtractor, checkForStaffAndAdmin, async (
+  req: Request & { decodedToken?: UserTokenInfo, admin?: boolean, staff?: boolean },
+  res,  
+  next
+) => {
   try {
+    if(!(req.staff || req.admin)){
+      throw new Error('only staff and admins can do this', { cause: 401 })
+    }
+
     await menuService.deleteMenuItem(Number(req.params.id))
     res.status(204).end()
   } catch (e){

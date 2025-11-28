@@ -6,3 +6,5 @@ export const ADMIN_SECRET: string = process.env.ADMIN_SECRET || 'secret'
 export const STUFF_SECRET: string = process.env.STUFF_SECRET || 'secret'
 
 export const POSTGRES_URL = process.env.POSTGRES_URL
+
+export const SECRET = process.env.SECRET || ''
