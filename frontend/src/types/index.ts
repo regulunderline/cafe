@@ -1,5 +1,3 @@
-import type { UnknownAction } from "redux"
-
 export interface MenuItemType {
   id: number
   name: string
@@ -21,18 +19,6 @@ export interface MenuItemEntries {
   weight?: number
   ingredients?: string[]
 }
-
-export interface NewMenuItemAction extends UnknownAction {
-  type: string,
-  payload: MenuItemType
-}
-
-export interface SetMenuItemsAction extends UnknownAction {
-  type: string,
-  payload: MenuItemType[]
-}
-
-export type MenuItemAction = NewMenuItemAction | SetMenuItemsAction
 
 export interface UserType {
   id: number
@@ -57,6 +43,7 @@ export interface UserFields {
 }
 
 export type NonSensetiveUser = Omit<UserFields, 'password'>
+export type FrontEndUser = NonSensetiveUser & { token: string }
 
 export interface NewUser {
   username: string
@@ -81,16 +68,16 @@ export interface UserTokenInfo {
   sessionId?: number
 }
 
-export type FilterType = 'ALL' | 'INGREDIENTS' | 'NOINGREDIENTS'
-
-export interface SetFilterAction extends UnknownAction {
-  type: string,
-  payload: FilterType
+export interface LoginInfo {
+  username: string,
+  password: string
 }
 
-export type FilterAction = SetFilterAction
+export type FilterType = 'ALL' | 'INGREDIENTS' | 'NOINGREDIENTS'
 
 export interface ReducerState {
   menuItems: MenuItemType[],
-  filter: FilterType
+  filter: FilterType,
+  user: FrontEndUser,
+  users: NonSensetiveUser[]
 }

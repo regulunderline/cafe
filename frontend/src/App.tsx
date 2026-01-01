@@ -1,25 +1,44 @@
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-
-import { initializeMenuItems } from "./reducers/menuItemReducer.ts"
-import MenuItemForm from "./components/MenuItemForm.tsx"
+import {
+  BrowserRouter as Router,
+  Routes, Route
+} from 'react-router-dom'
 
 import MenuItems from "./components/MenuItems.tsx"
-import VisibilityFilter from "./components/VisibilityFilter.tsx"
+import LoginForm from "./components/LoginForm.tsx"
+import Users from "./components/Users.tsx"
+import Profile from "./components/Profile.tsx"
+
+import { setUser } from "./reducers/userReducer.ts"
+import Header from "./components/Header.tsx"
+import Home from "./components/Home.tsx"
+import User from './components/User.tsx'
 
 const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // @ts-expect-error will type later
-    dispatch(initializeMenuItems())
+    const loggedUserJSON = window.localStorage.getItem('loggedCafeUser')
+
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      dispatch(setUser(user))
+    }
   }, [dispatch])
 
-  return <div>
-    <VisibilityFilter />
-    <MenuItemForm />
-    <MenuItems />
-  </div>
+  return <Router>
+    <Header />
+
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/menuItems" element={<MenuItems />} />
+      <Route path="/users" element={<Users />} />
+      <Route path="/users/:id" element={<User />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/login" element={<LoginForm />} />
+    </Routes>
+  </Router>
 }
 
 export default App

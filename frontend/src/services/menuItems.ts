@@ -1,6 +1,6 @@
 import axios from "axios"
 
-import type { MenuItemType, NewMenuItem } from "../types"
+import type { MenuItemEntries, MenuItemType, NewMenuItem } from "../types"
 
 const url = 'http://localhost:3001/api/menuItems/'
 
@@ -13,10 +13,19 @@ const getAll = async () => {
   return response.data as MenuItemType[]
 }
 
-const creatNew = async(item: NewMenuItem) => {
-  const response = await axios.post(url, { ...item, secret: 1 }, {
+const getOne = async (id: number) => {
+  const response = await axios.get(`${url}${id}`)
+  if(response.status !== 200){
+    throw new Error('couldn\'t get Menu Items')
+  }
+
+  return response.data as MenuItemType
+}
+
+const creatNew = async(item: NewMenuItem, token: string) => {
+  const response = await axios.post(url, { ...item }, {
     headers: {
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlZ3VsIiwiaWQiOjMsInNlc3Npb25JZCI6NiwiaWF0IjoxNzY3MTE3ODQ1fQ.vL4QrmfGXwzBjGfatXZu512wBF71fT1gkgkKbc8Eu_c'
+      Authorization: `Bearer ${token}`
     }
   })
   if(response.status !== 200){
@@ -27,4 +36,17 @@ const creatNew = async(item: NewMenuItem) => {
   return response.data as MenuItemType  
 }
 
-export default { getAll, creatNew }
+const updateOne = async (updateInfo: MenuItemEntries, id: number, token: string) => {
+  const response = await axios.put(`${url}${id}`, updateInfo, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  if(response.status !== 200){
+    throw new Error('couldn\'t update Menu Item')
+  }
+
+  return response.data as MenuItemType
+}
+
+export default { getAll, getOne, creatNew, updateOne }

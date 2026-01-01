@@ -9,17 +9,13 @@ import { SECRET } from '../utils/config'
 import { Response } from 'express'
 import { User } from '../models'
 import Session from '../models/session'
-import { UserTokenInfo } from '../types'
+import { FrontEndUser, UserTokenInfo } from '../types'
 
 const router = express.Router()
 
 router.post('/', async (
   { body }: { body:unknown }, 
-  res: Response<{ 
-    token: string,
-    username: string,
-    name: string,
-  }>
+  res: Response<FrontEndUser>
 ) => {
   if(!body || typeof body !== 'object'){
     throw new Error('incorrect or missing data')
@@ -52,7 +48,9 @@ router.post('/', async (
 
   const token = jwt.sign(userForToken, SECRET)
 
-  res.json({ token, username: user.username, name: user.name})
+  const { username, name, id, disabled, staff, admin, created_at, updated_at } = user
+
+  res.json({ token, username, name, id, disabled, staff, admin, created_at, updated_at })
 })
 
 router.use(errorHandler)

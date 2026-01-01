@@ -2,11 +2,15 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import menuItemReducer from './reducers/menuItemReducer.ts'
 import filterReducer from './reducers/filterReducer.ts'
+import userReducer from './reducers/userReducer.ts'
+import usersReducer from './reducers/usersReducer.ts'
 
 const store = configureStore({
   reducer: {
   menuItems: menuItemReducer,
-  filter: filterReducer
+  filter: filterReducer,
+  user: userReducer,
+  users: usersReducer
 }
 })
 console.log(store.getState())

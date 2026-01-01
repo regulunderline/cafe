@@ -43,6 +43,7 @@ export interface UserFields {
 }
 
 export type NonSensetiveUser = Omit<UserFields, 'password'>
+export type FrontEndUser = NonSensetiveUser & { token: string }
 
 export interface NewUser {
   username: string

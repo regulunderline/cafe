@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import type { FilterType, SetFilterAction } from "../types"
 
 const filterSlice = createSlice({
-  name: 'menuItems',
+  name: 'filter',
   initialState: 'ALL' as FilterType,
   reducers: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

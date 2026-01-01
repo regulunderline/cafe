@@ -1,11 +1,13 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import type { FormEvent } from 'react'
 
 import { createMenuItem } from '../reducers/menuItemReducer'
 import menuItemService from '../services/menuItems.ts'
+import type { ReducerState } from '../types'
 
 const MenuItemForm = () => {
   const dispatch = useDispatch()
+  const user = useSelector((state: ReducerState) => state.user)
 
   const addMenuItem = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -23,7 +25,7 @@ const MenuItemForm = () => {
       weight: Number(event.target.weight.value)
     }
 
-    const addedMenuItem = await menuItemService.creatNew(newMenuItem)
+    const addedMenuItem = await menuItemService.creatNew(newMenuItem, user.token)
     
     event.target.menuItem.value = ''
     event.target.price.value = ''

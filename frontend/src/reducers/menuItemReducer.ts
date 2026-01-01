@@ -1,7 +1,8 @@
 import { createSlice, type Dispatch } from '@reduxjs/toolkit'
 
 import menuItemService from '../services/menuItems.ts'
-import type { MenuItemType, SetMenuItemsAction, NewMenuItemAction } from "../types"
+import type { MenuItemType, } from "../types"
+import type { NewMenuItemAction, SetMenuItemsAction } from '../types/actionTypes.ts'
 
 const menuItemSlice = createSlice({
   name: 'menuItems',
