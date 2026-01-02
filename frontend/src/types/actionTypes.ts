@@ -1,5 +1,5 @@
 import type { UnknownAction } from "redux"
-import type { FilterType, FrontEndUser, MenuItemType, NonSensetiveUser } from "."
+import type { FilterType, FrontEndUser, MenuItemType, NonSensetiveUser, Notification } from "."
 
 export interface NewMenuItemAction extends UnknownAction {
   type: string,
@@ -39,3 +39,8 @@ export interface SetFilterAction extends UnknownAction {
 }
 
 export type FilterAction = SetFilterAction
+
+export interface SetNotificationAction extends UnknownAction {
+  type: string,
+  payload: Notification | null
+}

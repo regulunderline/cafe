@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from "react"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 
 import { createOneUser } from "../reducers/usersReducer.ts"
+import { newNotification } from "../reducers/notificationReducer.ts"
 
 import type { UnknownAction } from "redux"
 import type { NewUser, ReducerState } from "../types"
@@ -18,13 +19,17 @@ const SignUp = () => {
   const [secret, setSecret] = useState('')
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const user = useSelector((state: ReducerState) => state.user)
 
   const handleSignUp = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if(password !== confirmPassword) return
+    if(password !== confirmPassword) {
+      dispatch(newNotification('passwords don\'t match', 'error', 5) as unknown as UnknownAction)
+      return
+    }
 
     const newUser: NewUser = { username, name, password }
     if(admin || staff) {
@@ -38,16 +43,15 @@ const SignUp = () => {
     }
 
     try {
-      dispatch(createOneUser(newUser) as unknown as UnknownAction)
-      setUsername('')
-      setName('')
-      setPassword('')
-      setConfirmPassword('')
-      setStaff(false)
-      setAdmin(false)
-      setSecret('')
+      const success = await dispatch(createOneUser(newUser) as unknown as UnknownAction)
+      if(success) {
+        dispatch(newNotification('signed up successfully', 'success', 10) as unknown as UnknownAction)
+        navigate('/login')
+      }
     } catch (e) {
-      console.log(e)
+      if(e instanceof Error) {
+        dispatch(newNotification(e.message, 'error', 5) as unknown as UnknownAction)
+      }
     }
   }
 

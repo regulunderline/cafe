@@ -75,9 +75,15 @@ export interface LoginInfo {
 
 export type FilterType = 'ALL' | 'INGREDIENTS' | 'NOINGREDIENTS'
 
+export interface Notification {
+  message: string,
+  type: string
+}
+
 export interface ReducerState {
   menuItems: MenuItemType[],
   filter: FilterType,
   user: FrontEndUser,
-  users: NonSensetiveUser[]
+  users: NonSensetiveUser[],
+  notification: null | Notification
 }

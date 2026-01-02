@@ -3,6 +3,7 @@ import { createSlice, type Dispatch } from '@reduxjs/toolkit'
 import usersService from '../services/users.ts'
 import type { NewUser, NonSensetiveUser, ReducerState, UserEntries } from "../types"
 import type { AddUserAction, changeOneUserAction, SetUsersAction } from '../types/actionTypes.ts'
+import { AxiosError } from 'axios'
 
 const usersSlice = createSlice({
   name: 'users',
@@ -85,8 +86,13 @@ export const createOneUser = (newUser: NewUser) => {
     try{
       const user = await usersService.createOne(newUser)
       dispatch(addUser(user))
+      return true
     } catch (e) {
       console.log(e)
+      if((e instanceof AxiosError) && e.response && e.response.data.error){
+        throw new Error(e.response.data.error)
+      }
+      return false
     }
   }
 }

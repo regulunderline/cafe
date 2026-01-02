@@ -2,11 +2,11 @@ import { useState, type FormEvent } from "react"
 import { Navigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 
-import loginService from '../services/login.ts'
-
-import { setUser } from "../reducers/userReducer.ts"
+import { logIn } from "../reducers/userReducer.ts"
 
 import type { ReducerState } from "../types"
+import type { UnknownAction } from "redux"
+import { newNotification } from "../reducers/notificationReducer.ts"
 
 
 const LoginForm = () => {
@@ -21,11 +21,14 @@ const LoginForm = () => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({ username, password })
-
-      dispatch(setUser(user))
+      const loggedInUser = await dispatch(logIn({ username, password }) as unknown as UnknownAction)
+      if(loggedInUser) {
+        dispatch(newNotification(`welcome ${loggedInUser.name}`, 'success', 10) as unknown as UnknownAction)
+      }
     } catch (e) {
-      console.log(e)
+      if(e instanceof Error) {
+        dispatch(newNotification(e.message, 'error', 5) as unknown as UnknownAction)
+      }
     }
   }
 

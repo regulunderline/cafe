@@ -15,6 +15,7 @@ import Header from "./components/Header.tsx"
 import Home from "./components/Home.tsx"
 import User from './components/User.tsx'
 import SignUp from "./components/SignUp.tsx"
+import Notification from "./components/Notification.tsx"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -30,6 +31,7 @@ const App = () => {
 
   return <Router>
     <Header />
+    <Notification />
 
     <Routes>
       <Route path="/" element={<Home />} />
