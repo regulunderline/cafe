@@ -5,16 +5,16 @@ import {
   Routes, Route
 } from 'react-router-dom'
 
-import MenuItems from "./components/MenuItems.tsx"
-import LoginForm from "./components/LoginForm.tsx"
-import Users from "./components/Users.tsx"
-import Profile from "./components/Profile.tsx"
+import MenuItems from "./components/routes/MenuItems"
+import LoginForm from "./components/routes/Login"
+import Users from "./components/routes/Users"
+import Profile from "./components/routes/Profile"
 
 import { setUser } from "./reducers/userReducer.ts"
 import Header from "./components/Header.tsx"
-import Home from "./components/Home.tsx"
-import User from './components/User.tsx'
-import SignUp from "./components/SignUp.tsx"
+import Home from "./components/routes/Home"
+import User from './components/routes/User'
+import SignUp from "./components/routes/SignUp"
 import Notification from "./components/Notification.tsx"
 
 const App = () => {

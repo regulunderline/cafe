@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import MenuItem from './MenuItem'
+import MenuItem from '../MenuItem'
 import MenuItemForm from './MenuItemForm.tsx'
-import VisibilityFilter from './VisibilityFilter.tsx'
+import VisibilityFilter from '../../utils/VisibilityFilter.tsx'
 
-import { initializeMenuItems } from "../reducers/menuItemReducer.ts"
-import type { ReducerState } from '../types'
+import { initializeMenuItems } from "../../../reducers/menuItemReducer.ts"
+import type { ReducerState } from '../../../types'
 
 const MenuItems = () => {
   const dispatch = useDispatch()

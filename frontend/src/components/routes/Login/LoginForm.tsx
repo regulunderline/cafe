@@ -1,21 +1,27 @@
-import { useState, type FormEvent } from "react"
-import { Navigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-
-import { logIn } from "../reducers/userReducer.ts"
-
-import type { ReducerState } from "../types"
+import { useEffect, useRef, useState, type FormEvent } from "react"
+import { useDispatch } from "react-redux"
 import type { UnknownAction } from "redux"
-import { newNotification } from "../reducers/notificationReducer.ts"
 
+import { logIn } from "../../../reducers/userReducer.ts"
+import { newNotification } from "../../../reducers/notificationReducer.ts"
+
+import CafeButton from "../../utils/CafeButton.tsx"
+import CafeInput from "../../utils/CafeInput.tsx"
+import CafeForm from "../../utils/CafeForm.tsx"
 
 const LoginForm = () => {
+  const userRef = useRef<HTMLInputElement>(null)
+
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
 
-  const user = useSelector((state: ReducerState) => state.user)
+  useEffect(() => {
+    if(userRef.current) {
+      userRef.current.focus()
+    }
+  }, [])
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -32,32 +38,32 @@ const LoginForm = () => {
     }
   }
 
-  return user ? <Navigate replace to="/" /> : <>
-    <h2>Login</h2>
-    <form onSubmit={handleLogin}>
+  return (
+    <CafeForm onSubmit={handleLogin}>
       <div>
         <label>
           username
-          <input
+          <CafeInput
             type="text"
             value={username}
             onChange={({ target }) => setUsername(target.value)}
+            ref={userRef}
           />
         </label>
       </div>
       <div>
         <label>
           password
-          <input
+          <CafeInput
             type="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
         </label>
       </div>
-      <button type="submit">login</button>
-    </form>
-  </>
+      <CafeButton text="login" type="submit" />
+    </CafeForm>
+  )
 }
 
 export default LoginForm

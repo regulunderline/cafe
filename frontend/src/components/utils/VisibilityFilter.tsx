@@ -1,24 +1,27 @@
 import { useDispatch } from 'react-redux'
-import { filterChange } from '../reducers/filterReducer'
+
+import { filterChange } from '../../reducers/filterReducer'
+import CafeInput from './CafeInput'
 
 const VisibilityFilter = () => {
   const dispatch = useDispatch()
 
   return (
     <div>
-      <input
+      <CafeInput
         type="radio"
         name="filter"
         onChange={() => dispatch(filterChange('ALL'))}
+        defaultChecked
       />
       all
-      <input
+      <CafeInput
         type="radio"
         name="filter"
         onChange={() => dispatch(filterChange('INGREDIENTS'))}
       />
       with ingredients
-      <input
+      <CafeInput
         type="radio"
         name="filter"
         onChange={() => dispatch(filterChange('NOINGREDIENTS'))}

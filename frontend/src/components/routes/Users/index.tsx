@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import type { ReducerState } from '../types'
-import { initializeUsers } from '../reducers/usersReducer.ts'
 import { Link } from 'react-router-dom'
+
+import { initializeUsers } from '../../../reducers/usersReducer.ts'
+
+import type { ReducerState } from '../../../types'
 
 const Users = () => {
   const dispatch = useDispatch()

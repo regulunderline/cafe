@@ -1,15 +1,20 @@
-import { useState, type FormEvent } from "react"
-import { Navigate, useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-
-import { createOneUser } from "../reducers/usersReducer.ts"
-import { newNotification } from "../reducers/notificationReducer.ts"
-
+import { useEffect, useRef, useState, type FormEvent } from "react"
+import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
 import type { UnknownAction } from "redux"
-import type { NewUser, ReducerState } from "../types"
+
+import { createOneUser } from "../../../reducers/usersReducer.ts"
+import { newNotification } from "../../../reducers/notificationReducer.ts"
+
+import type { NewUser } from "../../../types"
+import CafeForm from "../../utils/CafeForm.tsx"
+import CafeButton from "../../utils/CafeButton.tsx"
+import CafeInput from "../../utils/CafeInput.tsx"
 
 
-const SignUp = () => {
+const SignUpForm = () => {
+  const userRef = useRef<HTMLInputElement>(null)
+
   const [username, setUsername] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
@@ -21,7 +26,11 @@ const SignUp = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const user = useSelector((state: ReducerState) => state.user)
+  useEffect(() => {
+      if(userRef.current) {
+        userRef.current.focus()
+      }
+    }, [])
 
   const handleSignUp = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -55,23 +64,23 @@ const SignUp = () => {
     }
   }
 
-  return user ? <Navigate replace to="/" /> : <>
-    <h2>Sign Up</h2>
-    <form onSubmit={handleSignUp}>
+  return (
+    <CafeForm onSubmit={handleSignUp}>
       <div>
         <label>
           username
-          <input
+          <CafeInput
             type="text"
             value={username}
             onChange={({ target }) => setUsername(target.value)}
+            ref={userRef}
           />
         </label>
       </div>
       <div>
         <label>
           name
-          <input
+          <CafeInput
             type="text"
             value={name}
             onChange={({ target }) => setName(target.value)}
@@ -81,7 +90,7 @@ const SignUp = () => {
       <div>
         <label>
           password
-          <input
+          <CafeInput
             type="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
@@ -91,7 +100,7 @@ const SignUp = () => {
       <div>
         <label>
           confirm password
-          <input
+          <CafeInput
             type="password"
             value={confirmPassword}
             onChange={({ target }) => setConfirmPassword(target.value)}
@@ -101,7 +110,7 @@ const SignUp = () => {
       <div>
         <label>
           staff
-          <input
+          <CafeInput
             type="checkbox"
             checked={staff}
             onChange={({ target }) => setStaff(target.checked)}
@@ -111,7 +120,7 @@ const SignUp = () => {
       <div>
         <label>
           admin
-          <input
+          <CafeInput
             type="checkbox"
             checked={admin}
             onChange={({ target }) => setAdmin(target.checked)}
@@ -122,16 +131,16 @@ const SignUp = () => {
         <div>
           <label>
             secret
-            <input
+            <CafeInput
               type="text"
               value={secret}
               onChange={({ target }) => setSecret(target.value)}
             />
           </label>
         </div>}
-      <button type="submit">signup</button>
-    </form>
-  </>
+      <CafeButton text="signup" type="submit" />
+    </CafeForm>
+  )
 }
 
-export default SignUp
+export default SignUpForm

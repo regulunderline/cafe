@@ -27,7 +27,6 @@ const getOne = async (id: number) => {
 }
 
 const createOne = async (newUser: NewUser) => {
-  console.log(newUser)
   const response = await axios.post(`${url}`, newUser)
 
   if(response.status !== 200){

@@ -2,10 +2,11 @@ import { useEffect, type MouseEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import { changeOneUser, setOneUser } from '../reducers/usersReducer'
+import { changeOneUser, setOneUser } from '../../../reducers/usersReducer'
 
-import type { ReducerState } from '../types'
 import type { UnknownAction } from 'redux'
+import type { ReducerState } from '../../../types'
+import CafeButton from '../../utils/CafeButton'
 
 const User = () => {
   const id = Number(useParams().id)
@@ -44,9 +45,9 @@ const User = () => {
         {user.staff && <p><strong>staff</strong></p>}
 
         {(loggedInUser && loggedInUser.admin && user.disabled)
-          && <button onClick={handleEnable}>enable</button>}
+          && <CafeButton text="enable" onClick={handleEnable} />}
         {(loggedInUser && loggedInUser.admin && !user.disabled)
-          && <button onClick={handleDisable}>disable</button>}
+          && <CafeButton text="disable" onClick={handleDisable} />}
       </div>
     )
   }

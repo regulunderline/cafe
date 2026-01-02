@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
 import type { FormEvent } from 'react'
 
-import { createMenuItem } from '../reducers/menuItemReducer'
-import menuItemService from '../services/menuItems.ts'
-import type { ReducerState } from '../types'
+import { createMenuItem } from '../../../reducers/menuItemReducer'
+import menuItemService from '../../../services/menuItems.ts'
+import type { ReducerState } from '../../../types'
+import CafeForm from '../../utils/CafeForm.tsx'
+import CafeButton from '../../utils/CafeButton.tsx'
+import CafeInput from '../../utils/CafeInput.tsx'
 
 const MenuItemForm = () => {
   const dispatch = useDispatch()
@@ -35,13 +38,13 @@ const MenuItemForm = () => {
   }
 
   return (
-    <form onSubmit={addMenuItem}>
-      <p><input name="menuItem" placeholder="name" /></p>
-      <p><input name="price" placeholder="price" type="number"/></p>
-      <p><input name="weight" placeholder="weight" type="number"/></p>
+    <CafeForm onSubmit={addMenuItem}>
+      <div><CafeInput name="menuItem" placeholder="name" /></div>
+      <div><CafeInput name="price" placeholder="price" type="number" /></div>
+      <div><CafeInput name="weight" placeholder="weight" type="number" /></div>
 
-      <button type="submit">add</button>
-    </form>
+      <CafeButton text="add" type="submit" />
+    </CafeForm>
   )
 }
 
