@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios"
 
-import type { NonSensetiveUser } from "../types"
+import type { NonSensetiveUser, UserEntries } from "../types"
 
 const url = 'http://localhost:3001/api/users/'
 
@@ -26,4 +26,18 @@ const getOne = async (id: number) => {
   }
 }
 
-export default { getAll, getOne }
+const updateOne = async (updateInfo: UserEntries, id: number, token: string) => {
+  const response = await axios.put(`${url}${id}`, updateInfo, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+
+  if(response.status !== 200){
+    throw new Error('couldn\'t update Menu Item')
+  }
+
+  return response.data as NonSensetiveUser
+}
+
+export default { getAll, getOne, updateOne }

@@ -1,8 +1,8 @@
 import { createSlice, type Dispatch } from '@reduxjs/toolkit'
 
 import usersService from '../services/users.ts'
-import type { NonSensetiveUser, ReducerState } from "../types"
-import type { AddUserAction, SetUsersAction } from '../types/actionTypes.ts'
+import type { NonSensetiveUser, ReducerState, UserEntries } from "../types"
+import type { AddUserAction, changeOneUserAction, SetUsersAction } from '../types/actionTypes.ts'
 
 const usersSlice = createSlice({
   name: 'users',
@@ -13,11 +13,16 @@ const usersSlice = createSlice({
     },
     addUser(state: NonSensetiveUser[], action: AddUserAction){
       return state.concat(action.payload)
-    }
+    },
+    changeOneUserReducer(state: NonSensetiveUser[], action: changeOneUserAction){
+      
+
+      return state.map(user => user.id === action.payload.id ? action.payload : user)
+    },
   }
 })
 
-const { setUsers, addUser } = usersSlice.actions
+const { setUsers, addUser, changeOneUserReducer } = usersSlice.actions
 
 export const initializeUsers = () => {
   return async (dispatch: Dispatch) => {
@@ -35,11 +40,34 @@ export const setOneUser = (id: number) => {
     } else {
       try {
         const user = await usersService.getOne(id)
-        dispatch(addUser(user))
+        dispatch(setUsers([user]))
       } catch (e){
         if(e instanceof Error){
           throw e
         }
+      }
+    }
+  }
+}
+
+export const changeOneUser = (updateInfo: UserEntries, id: number, token: string) => {
+  return async (dispatch: Dispatch, getState: () => ReducerState) => {
+    const state = getState()
+
+    const user = state.users.find(u => u.id === id)
+    try {
+      const updatedUser = await usersService.updateOne(updateInfo, id, token)
+
+      if(user){ 
+        dispatch(changeOneUserReducer(updatedUser))
+      } else {
+        dispatch(addUser(updatedUser))
+      }
+    } catch (e){
+      if(e instanceof Error){
+        throw e
+      } else {
+        console.log(e)
       }
     }
   }

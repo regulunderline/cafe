@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, type MouseEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import { setOneUser } from '../reducers/usersReducer'
+import { changeOneUser, setOneUser } from '../reducers/usersReducer'
 
 import type { ReducerState } from '../types'
+import type { UnknownAction } from 'redux'
 
 const User = () => {
   const id = Number(useParams().id)
@@ -16,18 +17,37 @@ const User = () => {
   }, [dispatch, id])
 
   const user = useSelector((state: ReducerState) => state.users.find(u => u.id === id))
-  //const loggedInUser = useSelector((state: ReducerState) => state.user)
+  const loggedInUser = useSelector((state: ReducerState) => state.user)
 
   if(!user){
     return <div><strong>something went wrong</strong></div>
   } else {
+
+    const handleDisable = (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault()
+
+      dispatch(changeOneUser({ disabled: true }, user.id, loggedInUser.token) as unknown as UnknownAction)
+    }
+
+    const handleEnable = (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault()
+
+      dispatch(changeOneUser({ disabled: false }, user.id, loggedInUser.token) as unknown as UnknownAction)
+    }
+    
     return (
-      <li key={user.id}>
+      <div>
         <p>name: {user.name}</p>
         <p>username: {user.username}</p>
+
         {user.admin && <p><strong>admin</strong></p>}
         {user.staff && <p><strong>staff</strong></p>}
-      </li>
+
+        {(loggedInUser && loggedInUser.admin && user.disabled)
+          && <button onClick={handleEnable}>enable</button>}
+        {(loggedInUser && loggedInUser.admin && !user.disabled)
+          && <button onClick={handleDisable}>disable</button>}
+      </div>
     )
   }
 }

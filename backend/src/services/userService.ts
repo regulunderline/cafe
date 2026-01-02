@@ -65,16 +65,10 @@ const addOne = async (newUser: NewUser): Promise<NonSensetiveUser> => {
   return { id, name, username, staff, admin, disabled, created_at, updated_at }
 }
 
-const updateOne = async ({ secret, ...updateInfo }: UserEntries, idToUpdate: number): Promise<NonSensetiveUser> => {
+const updateOne = async (updateInfo: UserEntries, idToUpdate: number): Promise<NonSensetiveUser> => {
   const userToUpdate = await User.findByPk(idToUpdate)
   if(!userToUpdate){
     throw new Error('user not found', { cause: 404 })
-  }
-  if ('staff' in updateInfo) {
-    verifyStaffSecret(secret)
-  }
-  if ('admin' in updateInfo) {
-    verifyAdminSecret(secret)
   }
 
   const { id, name, username, staff, admin, disabled, created_at, updated_at } = await userToUpdate.update({...updateInfo}, {

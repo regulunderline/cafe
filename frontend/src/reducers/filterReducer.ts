@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
-import type { FilterType, SetFilterAction } from "../types"
+import type { FilterType } from "../types/"
+import type { SetFilterAction } from "../types/actionTypes"
 
 const filterSlice = createSlice({
   name: 'filter',

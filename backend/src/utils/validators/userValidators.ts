@@ -86,8 +86,8 @@ export const toUpdateUserInfo = (object: unknown): UserEntries => {
   if('admin' in object && (typeof object.admin === 'boolean')){
     userEntries.admin = object.admin
   }
-  if('secret' in object){
-    userEntries.secret = parseSecret(object.secret)
+  if('disabled' in object && (typeof object.disabled === 'boolean')){
+    userEntries.disabled = object.disabled
   }
 
   return userEntries

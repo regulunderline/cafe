@@ -28,6 +28,11 @@ export interface AddUserAction extends UnknownAction {
   payload: NonSensetiveUser
 }
 
+export interface changeOneUserAction extends UnknownAction {
+  type: string,
+  payload: NonSensetiveUser
+}
+
 export interface SetFilterAction extends UnknownAction {
   type: string,
   payload: FilterType

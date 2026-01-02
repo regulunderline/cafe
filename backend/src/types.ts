@@ -59,7 +59,7 @@ export interface UserEntries {
   name?: string
   staff?: boolean
   admin?: boolean
-  secret?: string
+  disabled?: boolean
 }
 
 export interface UserTokenInfo {
