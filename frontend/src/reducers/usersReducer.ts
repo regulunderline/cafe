@@ -1,7 +1,7 @@
 import { createSlice, type Dispatch } from '@reduxjs/toolkit'
 
 import usersService from '../services/users.ts'
-import type { NonSensetiveUser, ReducerState, UserEntries } from "../types"
+import type { NewUser, NonSensetiveUser, ReducerState, UserEntries } from "../types"
 import type { AddUserAction, changeOneUserAction, SetUsersAction } from '../types/actionTypes.ts'
 
 const usersSlice = createSlice({
@@ -77,6 +77,17 @@ export const addOneUser = (id: number) => {
   return async (dispatch: Dispatch) => {
     const user = await usersService.getOne(id)
     dispatch(addUser(user))
+  }
+}
+
+export const createOneUser = (newUser: NewUser) => {
+  return async (dispatch: Dispatch) => {
+    try{
+      const user = await usersService.createOne(newUser)
+      dispatch(addUser(user))
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 

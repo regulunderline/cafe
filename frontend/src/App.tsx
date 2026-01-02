@@ -14,6 +14,7 @@ import { setUser } from "./reducers/userReducer.ts"
 import Header from "./components/Header.tsx"
 import Home from "./components/Home.tsx"
 import User from './components/User.tsx'
+import SignUp from "./components/SignUp.tsx"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -37,6 +38,7 @@ const App = () => {
       <Route path="/users/:id" element={<User />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/login" element={<LoginForm />} />
+      <Route path="/signup" element={<SignUp />} />
     </Routes>
   </Router>
 }

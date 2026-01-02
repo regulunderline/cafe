@@ -17,7 +17,8 @@ const Header = () => {
     {user
       ? <Link style={padding} to="/profile">profile</Link>
       : <>
-        <Link style={padding} to="/login">login</Link>
+        <Link style={padding} to="/login">log in</Link>
+        <Link style={padding} to="/signup">sign up</Link>
       </>
     }
   </div>

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios"
 
-import type { NonSensetiveUser, UserEntries } from "../types"
+import type { NewUser, NonSensetiveUser, UserEntries } from "../types"
 
 const url = 'http://localhost:3001/api/users/'
 
@@ -26,6 +26,17 @@ const getOne = async (id: number) => {
   }
 }
 
+const createOne = async (newUser: NewUser) => {
+  console.log(newUser)
+  const response = await axios.post(`${url}`, newUser)
+
+  if(response.status !== 200){
+    throw new Error('couldn\'t create user')
+  }
+
+  return response.data as NonSensetiveUser
+}
+
 const updateOne = async (updateInfo: UserEntries, id: number, token: string) => {
   const response = await axios.put(`${url}${id}`, updateInfo, {
     headers: {
@@ -34,10 +45,10 @@ const updateOne = async (updateInfo: UserEntries, id: number, token: string) => 
   })
 
   if(response.status !== 200){
-    throw new Error('couldn\'t update Menu Item')
+    throw new Error('couldn\'t update ')
   }
 
   return response.data as NonSensetiveUser
 }
 
-export default { getAll, getOne, updateOne }
+export default { getAll, getOne, createOne, updateOne }
