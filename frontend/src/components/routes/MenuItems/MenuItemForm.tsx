@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import type { FormEvent } from 'react'
 
 import { createMenuItem } from '../../../reducers/menuItemReducer'
-import { setNotification } from '../../../reducers/notificationReducer.ts'
+import { newNotification } from '../../../reducers/notificationReducer.ts'
 
 import CafeForm from '../../utils/CafeForm.tsx'
 import CafeButton from '../../utils/CafeButton.tsx'
@@ -36,14 +36,14 @@ const MenuItemForm = () => {
       const addedMenuItem = await dispatch(createMenuItem(newMenuItem, user.token) as unknown as UnknownAction) as unknown as MenuItemType
 
       if(addedMenuItem){
-        dispatch(setNotification({ message: `added ${addedMenuItem.name}`, type: 'success' }))
+        dispatch(newNotification(`added ${addedMenuItem.name}`, 'success', 10) as unknown as UnknownAction)
         event.target.menuItem.value = ''
         event.target.price.value = ''
         event.target.weight.value = ''
       }
     } catch (e) {
       if(e instanceof Error){
-        dispatch(setNotification({ message: e.message, type: 'error' }))
+        dispatch(newNotification(e.message, 'error', 5) as unknown as UnknownAction)
       } else {
         console.log(e)
       }

@@ -49,4 +49,17 @@ const updateOne = async (updateInfo: MenuItemEntries, id: number, token: string)
   return response.data as MenuItemType
 }
 
-export default { getAll, getOne, creatNew, updateOne }
+const deleteOne = async (id: number, token: string) => {
+  const response = await axios.delete(`${url}${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  if(response.status !== 204){
+    throw new Error('couldn\'t delete Menu Item')
+  }
+
+  return true
+}
+
+export default { getAll, getOne, creatNew, updateOne, deleteOne }

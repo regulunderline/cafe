@@ -39,7 +39,7 @@ const ChangeForm = ({ menuItem, token, ...props }: { menuItem: MenuItemType, tok
           }
         }
 
-        case 'price': {
+        case 'price in cents': {
           const success = await dispatch(changeOneMenuItem({ price: Number(value) }, menuItem.id, token) as unknown as UnknownAction)
           if(success){
             dispatch(newNotification('changed price successfully', 'success', 5) as unknown as UnknownAction)

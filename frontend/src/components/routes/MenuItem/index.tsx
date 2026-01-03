@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type MouseEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import type { UnknownAction } from 'redux'
 
-import { setOneMenuItem } from '../../../reducers/menuItemReducer'
+import { deleteOneMenuItem, setOneMenuItem } from '../../../reducers/menuItemReducer'
 
 import CafeButton from '../../utils/CafeButton'
 
@@ -15,6 +15,7 @@ const MenuItem = () => {
   const id = Number(useParams().id)
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(setOneMenuItem(id) as unknown as UnknownAction)
@@ -26,6 +27,16 @@ const MenuItem = () => {
   if(!menuItem){
     return <div><strong>something went wrong</strong></div>
   } else {
+
+    const handleDelete = async (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault()
+      if(!window.confirm(`delete ${menuItem.name}? (no undo)`))return
+
+      const success = dispatch(deleteOneMenuItem(menuItem.id, loggedInUser.token) as unknown as UnknownAction)
+      if(success){
+        navigate('/')
+      }
+    }
     
     return (
       <div>
@@ -63,7 +74,7 @@ const MenuItem = () => {
             && <ChangeForm
               menuItem={menuItem}
               token={loggedInUser.token}
-              name='price'
+              name='price in cents'
             />
           }
         </div>
@@ -105,6 +116,15 @@ const MenuItem = () => {
                 menuItem={menuItem}
                 token={loggedInUser.token}
                 name='ingredient'
+              />
+            }
+          </div>
+
+          <div>
+          {(loggedInUser && loggedInUser.admin)
+              && <CafeButton 
+                text="Delete Menu Item"
+                onClick={handleDelete} 
               />
             }
           </div>

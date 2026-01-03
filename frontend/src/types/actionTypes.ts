@@ -11,12 +11,18 @@ export interface SetMenuItemsAction extends UnknownAction {
   payload: MenuItemType[]
 }
 
+
+export interface RemoveMenuItemAction extends UnknownAction {
+  type: string,
+  payload: number
+}
+
 export interface ChangeOneMenuItemAction extends UnknownAction {
   type: string,
   payload: MenuItemType
 }
 
-export type MenuItemAction = NewMenuItemAction | SetMenuItemsAction | ChangeOneMenuItemAction
+export type MenuItemAction = NewMenuItemAction | SetMenuItemsAction | ChangeOneMenuItemAction | RemoveMenuItemAction
 
 export interface SetLoggedInUserAction extends UnknownAction {
   type: string,
