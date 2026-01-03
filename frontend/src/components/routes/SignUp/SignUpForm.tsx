@@ -53,6 +53,7 @@ const SignUpForm = () => {
 
     try {
       const success = await dispatch(createOneUser(newUser) as unknown as UnknownAction)
+
       if(success) {
         dispatch(newNotification('signed up successfully', 'success', 10) as unknown as UnknownAction)
         navigate('/login')

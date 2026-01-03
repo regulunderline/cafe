@@ -1,23 +1,24 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import MenuItem from '../MenuItem'
+import MenuItem from './MenuItem'
 import MenuItemForm from './MenuItemForm.tsx'
 import VisibilityFilter from '../../utils/VisibilityFilter.tsx'
 
 import { initializeMenuItems } from "../../../reducers/menuItemReducer.ts"
-import type { ReducerState } from '../../../types'
+
+import type { StoreState } from '../../../store.ts'
+import type { UnknownAction } from 'redux'
 
 const MenuItems = () => {
   const dispatch = useDispatch()
-  const user = useSelector((state: ReducerState) => state.user)
+  const user = useSelector((state: StoreState) => state.user)
 
   useEffect(() => {
-      // @ts-expect-error will type later
-      dispatch(initializeMenuItems())
-    }, [dispatch])
+    dispatch(initializeMenuItems() as unknown as UnknownAction)
+  }, [dispatch])
 
-  const menuItems = useSelector((state: ReducerState) => {
+  const menuItems = useSelector((state: StoreState) => {
     switch (state.filter){
       case 'INGREDIENTS':
         return state.menuItems.filter(item => item.ingredients)

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { initializeUsers } from '../../../reducers/usersReducer.ts'
 
-import type { ReducerState } from '../../../types'
+import type { StoreState } from '../../../store.ts'
 
 const Users = () => {
   const dispatch = useDispatch()
@@ -14,7 +14,7 @@ const Users = () => {
     dispatch(initializeUsers())
   }, [dispatch])
 
-  const users = useSelector((state: ReducerState) => state.users)
+  const users = useSelector((state: StoreState) => state.users)
 
   return (
     <div>

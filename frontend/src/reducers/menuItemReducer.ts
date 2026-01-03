@@ -1,23 +1,27 @@
 import { createSlice, type Dispatch } from '@reduxjs/toolkit'
 
 import menuItemService from '../services/menuItems.ts'
-import type { MenuItemType, } from "../types"
-import type { NewMenuItemAction, SetMenuItemsAction } from '../types/actionTypes.ts'
+import type { MenuItemEntries, MenuItemType, NewMenuItem, } from "../types"
+import type { ChangeOneMenuItemAction, NewMenuItemAction, SetMenuItemsAction } from '../types/actionTypes.ts'
+import type { StoreState } from '../store.ts'
 
 const menuItemSlice = createSlice({
   name: 'menuItems',
   initialState: [] as MenuItemType[],
   reducers: {
-    createMenuItem(state: MenuItemType[] = [], action: NewMenuItemAction) {
+    addMenuItem(state: MenuItemType[] = [], action: NewMenuItemAction) {
       state.push(action.payload)
     },
     setMenuItems(_state, action: SetMenuItemsAction) {
       return action.payload
-    }
+    },
+    changeOneMenuItemReducer(state, action: ChangeOneMenuItemAction){
+      return state.map(item => item.id === action.payload.id ? action.payload : item)
+    },
   }
 })
 
-const { setMenuItems } = menuItemSlice.actions
+const { setMenuItems, changeOneMenuItemReducer, addMenuItem } = menuItemSlice.actions
 
 export const initializeMenuItems = () => {
   return async (dispatch: Dispatch) => {
@@ -26,6 +30,73 @@ export const initializeMenuItems = () => {
   }
 }
 
-export const { createMenuItem } = menuItemSlice.actions
+export const setOneMenuItem = (id: number) => {
+  return async (dispatch: Dispatch, getState: () => StoreState) => {
+    const state = getState()
+    const menuItem = state.menuItems.find(i => i.id === id)
+    if (menuItem) {
+      dispatch(setMenuItems([menuItem]))
+    } else {
+      try {
+        const menuItem = await menuItemService.getOne(id)
+        dispatch(setMenuItems([menuItem]))
+      } catch (e){
+        if(e instanceof Error){
+          throw e
+        }
+      }
+    }
+  }
+}
+
+export const changeOneMenuItem = (updateInfo: MenuItemEntries, id: number, token: string) => {
+  return async (dispatch: Dispatch, getState: () => StoreState) => {
+    const state = getState()
+
+    const menuItem = state.menuItems.find(i => i.id === id)
+    try {
+      const updatedMenuItem = await menuItemService.updateOne(updateInfo, id, token)
+
+      if(menuItem){ 
+        dispatch(changeOneMenuItemReducer(updatedMenuItem))
+      } else {
+        dispatch(addMenuItem(updatedMenuItem))
+      }
+
+      if(updatedMenuItem){
+        return true
+      } else {
+        throw new Error('Something went wrong')
+      }
+    } catch (e){
+      if(e instanceof Error){
+        throw e
+      } else {
+        console.log(e)
+      }
+    }
+  }
+}
+
+export const createMenuItem = (newMenuItem: NewMenuItem, token: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const addedMenuItem = await menuItemService.creatNew(newMenuItem, token)
+
+      if(addedMenuItem){ 
+        dispatch(addMenuItem(addedMenuItem))
+        return addedMenuItem
+      } else {
+        throw new Error('Something went wrong')
+      }
+    } catch (e){
+      if(e instanceof Error){
+        throw e
+      } else {
+        console.log(e)
+      }
+    }
+  }
+}
 
 export default menuItemSlice.reducer

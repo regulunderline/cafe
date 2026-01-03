@@ -1,24 +1,24 @@
 import { useEffect, type MouseEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import type { UnknownAction } from 'redux'
 
 import { changeOneUser, setOneUser } from '../../../reducers/usersReducer'
 
-import type { UnknownAction } from 'redux'
-import type { ReducerState } from '../../../types'
 import CafeButton from '../../utils/CafeButton'
+
+import type { StoreState } from '../../../store'
 
 const User = () => {
   const id = Number(useParams().id)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // @ts-expect-error will type later
-    dispatch(setOneUser(id))
+    dispatch(setOneUser(id) as unknown as UnknownAction)
   }, [dispatch, id])
 
-  const user = useSelector((state: ReducerState) => state.users.find(u => u.id === id))
-  const loggedInUser = useSelector((state: ReducerState) => state.user)
+  const user = useSelector((state: StoreState) => state.users.find(u => u.id === id))
+  const loggedInUser = useSelector((state: StoreState) => state.user)
 
   if(!user){
     return <div><strong>something went wrong</strong></div>

@@ -11,7 +11,12 @@ export interface SetMenuItemsAction extends UnknownAction {
   payload: MenuItemType[]
 }
 
-export type MenuItemAction = NewMenuItemAction | SetMenuItemsAction
+export interface ChangeOneMenuItemAction extends UnknownAction {
+  type: string,
+  payload: MenuItemType
+}
+
+export type MenuItemAction = NewMenuItemAction | SetMenuItemsAction | ChangeOneMenuItemAction
 
 export interface SetLoggedInUserAction extends UnknownAction {
   type: string,
@@ -42,5 +47,5 @@ export type FilterAction = SetFilterAction
 
 export interface SetNotificationAction extends UnknownAction {
   type: string,
-  payload: Notification | null
+  payload: Omit<Notification, 'id'> | null
 }

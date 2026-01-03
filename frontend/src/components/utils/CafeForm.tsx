@@ -1,6 +1,6 @@
-import React from "react"
+import type { FormHTMLAttributes } from "react"
 
-const CafeForm = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
+const CafeForm = (props: FormHTMLAttributes<HTMLFormElement>) => {
   return (
     <form {...props} />
   )

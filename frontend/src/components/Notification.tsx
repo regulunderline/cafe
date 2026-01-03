@@ -15,7 +15,7 @@ const Notification = () => {
       : 'blue' 
   }
 
-  if (notification){
+  if (notification.message){
     return (
       <div style={style}>
         {notification.message}

@@ -1,9 +1,10 @@
 import { createSlice, type Dispatch } from '@reduxjs/toolkit'
 
 import usersService from '../services/users.ts'
-import type { NewUser, NonSensetiveUser, ReducerState, UserEntries } from "../types"
+import type { NewUser, NonSensetiveUser, UserEntries } from "../types"
 import type { AddUserAction, changeOneUserAction, SetUsersAction } from '../types/actionTypes.ts'
 import { AxiosError } from 'axios'
+import type { StoreState } from '../store.ts'
 
 const usersSlice = createSlice({
   name: 'users',
@@ -16,8 +17,6 @@ const usersSlice = createSlice({
       return state.concat(action.payload)
     },
     changeOneUserReducer(state: NonSensetiveUser[], action: changeOneUserAction){
-      
-
       return state.map(user => user.id === action.payload.id ? action.payload : user)
     },
   }
@@ -33,7 +32,7 @@ export const initializeUsers = () => {
 }
 
 export const setOneUser = (id: number) => {
-  return async (dispatch: Dispatch, getState: () => ReducerState) => {
+  return async (dispatch: Dispatch, getState: () => StoreState) => {
     const state = getState()
     const user = state.users.find(u => u.id === id)
     if (user) {
@@ -52,7 +51,7 @@ export const setOneUser = (id: number) => {
 }
 
 export const changeOneUser = (updateInfo: UserEntries, id: number, token: string) => {
-  return async (dispatch: Dispatch, getState: () => ReducerState) => {
+  return async (dispatch: Dispatch, getState: () => StoreState) => {
     const state = getState()
 
     const user = state.users.find(u => u.id === id)
