@@ -11,6 +11,7 @@ class MenuItem extends Model<MenuItemType, MenuItemAttributes> implements MenuIt
   name!: string
   price!: number
   weight!: number
+  category!: string
   ingredients?: string[]
   createdAt!: Date
   updatedAt!: Date
@@ -37,6 +38,11 @@ MenuItem.init({
   weight: {
     type: DataTypes.INTEGER,
     allowNull: false,
+  },
+  category: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    defaultValue: 'other'
   },
   ingredients: {
     type: DataTypes.ARRAY(DataTypes.TEXT),

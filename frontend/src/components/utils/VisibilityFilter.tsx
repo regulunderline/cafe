@@ -2,9 +2,14 @@ import { useDispatch } from 'react-redux'
 
 import { filterChange } from '../../reducers/filterReducer'
 import CafeInput from './CafeInput'
+import { useEffect } from 'react'
 
 const VisibilityFilter = () => {
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(filterChange('ALL'))
+  }, [dispatch])
 
   return (
     <div>

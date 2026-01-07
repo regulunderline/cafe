@@ -3,6 +3,7 @@ export interface MenuItemType {
   name: string
   price: number
   weight: number
+  category: string
   ingredients?: string[]
 }
 
@@ -10,6 +11,7 @@ export interface NewMenuItem {
   name: string
   price: number
   weight: number
+  category: string
   ingredients?: string[]
 }
 
@@ -17,6 +19,7 @@ export interface MenuItemEntries {
   name?: string
   price?: number
   weight?: number
+  category?: string
   ingredients?: string[]
 }
 

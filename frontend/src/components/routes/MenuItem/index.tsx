@@ -105,7 +105,7 @@ const MenuItem = () => {
             </ul>
           }
 
-          {(loggedInUser && loggedInUser.admin)
+          {(loggedInUser && loggedInUser.admin && changing !== 'ingredient')
               && <CafeButton 
                 text="add"
                 onClick={() => setChanging('ingredient')} 
@@ -115,7 +115,8 @@ const MenuItem = () => {
               && <ChangeForm
                 menuItem={menuItem}
                 token={loggedInUser.token}
-                name='ingredient'
+                name="ingredient"
+                buttonText="add"
               />
             }
           </div>

@@ -30,6 +30,13 @@ const parseWeight = (weight:unknown): number =>  {
   return weight
 }
 
+const parseCategory = (category:unknown): string =>  {
+  if(!category || !isString(category) || category.length > 31) {
+    throw new Error ('category must be less than 32 characters', { cause : 400 })
+  }
+  return category
+}
+
 export const toNewMenuItem = (object: unknown): NewMenuItem => {
   if ( !object || typeof object !== 'object' ) {
     throw new Error('Incorrect or missing data', { cause: 400 });
@@ -48,6 +55,7 @@ export const toNewMenuItem = (object: unknown): NewMenuItem => {
     name: parseName(object.name),
     price: parsePrice(object.price),
     weight: parseWeight(object.weight),
+    category: 'category' in object ? parseCategory(object.category) : 'other'
   }
   if('ingredients' in object){
     newMenuItem.ingredients = parseIngredients(object.ingredients)
@@ -72,6 +80,9 @@ export const toUpdateMenuItemInfo = (object: unknown): MenuItemEntries => {
   }
   if('ingredients' in object){
     newMenuItem.ingredients = parseIngredients(object.ingredients)
+  }
+  if('category' in object){
+    newMenuItem.category = parseCategory(object.category)
   }
 
   return newMenuItem

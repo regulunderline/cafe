@@ -10,7 +10,9 @@ import { newNotification } from "../../../reducers/notificationReducer"
 import type { MenuItemType } from "../../../types"
 import CafeButton from "../../utils/CafeButton"
 
-const ChangeForm = ({ menuItem, token, ...props }: { menuItem: MenuItemType, token: string } & FormHTMLAttributes<HTMLFormElement>) => {
+const ChangeForm = ({ buttonText, menuItem, token, ...props }: 
+  { buttonText?: string, menuItem: MenuItemType, token: string } & FormHTMLAttributes<HTMLFormElement>
+) => {
   const ref = useRef<HTMLInputElement>(null)
 
   const [value, setValue] = useState('')
@@ -102,7 +104,7 @@ const ChangeForm = ({ menuItem, token, ...props }: { menuItem: MenuItemType, tok
         />
       </div>
       <div>
-        <CafeButton text="change" type="submit" />
+        <CafeButton text={buttonText || 'change'} type="submit" />
       </div>
     </CafeForm>
   )
