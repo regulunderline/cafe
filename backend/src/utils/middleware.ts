@@ -11,21 +11,14 @@ import Session from '../models/session'
 
 export const errorHandler = (error: Error, _req: Request, res: Response, next: NextFunction) => {
   const setStatus = () => {
-    switch (error.cause) {
-      case 400:
-        return 400
-      case 401: 
-        return 401
-      case 404:
-        return 404
-      default:
-        return 520
-    }
+    if(!(error.cause && typeof error.cause === 'number')) return 502
+    return [400, 401, 404].includes(error.cause) ? error.cause : 502
   }
+
   if (error instanceof JsonWebTokenError) {
     res.status(401).json({ error: error.message })
   } else if (error instanceof ValidationError) {
-    res.status(401).json(error.errors.map(e => e.message))
+    res.status(400).json(error.errors.map(e => e.message))
   } else {
     res.status(setStatus()).send({ error: error.message })
   }

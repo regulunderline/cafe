@@ -81,6 +81,10 @@ const ChangeForm = ({ buttonText, menuItem, token, ...props }:
           }
         }
 
+        default: {
+          throw new Error('unsupported')
+        }
+
       }
     } catch (e) {
       if(e instanceof Error){

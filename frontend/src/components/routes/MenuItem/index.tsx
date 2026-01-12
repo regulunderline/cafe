@@ -9,6 +9,7 @@ import CafeButton from '../../utils/CafeButton'
 
 import type { StoreState } from '../../../store'
 import ChangeForm from './ChangeForm'
+import ChangeCategoryForm from './ChangeCategoryForm'
 
 const MenuItem = () => {
   const [changing, setChanging] = useState<string | null>(null) 
@@ -93,6 +94,24 @@ const MenuItem = () => {
               menuItem={menuItem}
               token={loggedInUser.token}
               name='weight'
+            />
+          }
+        </div>
+
+        <div>
+          category: {menuItem.category}
+          
+          {(loggedInUser && loggedInUser.admin)
+            && <CafeButton 
+              text="change"
+              onClick={() => setChanging('category')} 
+            />
+          }
+          {(loggedInUser && loggedInUser.admin && changing === 'category')
+            && <ChangeCategoryForm
+              menuItem={menuItem}
+              token={loggedInUser.token}
+              name='category'
             />
           }
         </div>

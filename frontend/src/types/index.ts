@@ -1,24 +1,17 @@
+export const Categories = ['MAIN', 'SIDE', 'DRINK', 'SALAD', 'OTHER'] as const
+
 export interface MenuItemType {
   id: number
   name: string
   price: number
   weight: number
+  category: typeof Categories[number]
   ingredients?: string[]
 }
 
-export interface NewMenuItem {
-  name: string
-  price: number
-  weight: number
-  ingredients?: string[]
-}
+export type NewMenuItem = Omit<MenuItemType, 'id'>
 
-export interface MenuItemEntries {
-  name?: string
-  price?: number
-  weight?: number
-  ingredients?: string[]
-}
+export type MenuItemEntries = Partial<NewMenuItem>
 
 export interface UserType {
   id: number
@@ -73,7 +66,7 @@ export interface LoginInfo {
   password: string
 }
 
-export type FilterType = 'ALL' | 'INGREDIENTS' | 'NOINGREDIENTS'
+export type FilterType = typeof Categories[number] | 'ALL'
 
 export interface Notification {
   message: string | null,

@@ -13,21 +13,13 @@ import type { UnknownAction } from 'redux'
 const MenuItems = () => {
   const dispatch = useDispatch()
   const user = useSelector((state: StoreState) => state.user)
+  const category = useSelector((state: StoreState) => state.filter)
 
   useEffect(() => {
-    dispatch(initializeMenuItems() as unknown as UnknownAction)
-  }, [dispatch])
+    dispatch(initializeMenuItems(category) as unknown as UnknownAction)
+  }, [dispatch, category])
 
-  const menuItems = useSelector((state: StoreState) => {
-    switch (state.filter){
-      case 'INGREDIENTS':
-        return state.menuItems.filter(item => item.ingredients)
-      case 'NOINGREDIENTS':
-        return state.menuItems.filter(item => !item.ingredients)
-      default:
-        return state.menuItems
-    }
-  })
+  const menuItems = useSelector((state: StoreState) => state.menuItems)
 
   return (
     <div>

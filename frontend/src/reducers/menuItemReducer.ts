@@ -1,7 +1,9 @@
 import { createSlice, type Dispatch } from '@reduxjs/toolkit'
 
 import menuItemService from '../services/menuItems.ts'
-import type { MenuItemEntries, MenuItemType, NewMenuItem, } from "../types"
+import { toOtherCategory } from '../utils/menuItems.ts'
+
+import type { FilterType, MenuItemEntries, MenuItemType, NewMenuItem, } from "../types"
 import type { ChangeOneMenuItemAction, NewMenuItemAction, RemoveMenuItemAction, SetMenuItemsAction } from '../types/actionTypes.ts'
 import type { StoreState } from '../store.ts'
 
@@ -10,10 +12,10 @@ const menuItemSlice = createSlice({
   initialState: [] as MenuItemType[],
   reducers: {
     addMenuItem(state: MenuItemType[] = [], action: NewMenuItemAction) {
-      state.push(action.payload)
+      state.push(toOtherCategory(action.payload))
     },
     setMenuItems(_state, action: SetMenuItemsAction) {
-      return action.payload
+      return action.payload.map(i => toOtherCategory(i))
     },
     removeMenuItem(state, action: RemoveMenuItemAction) {
       return state.filter(i => i.id !== action.payload)
@@ -26,10 +28,10 @@ const menuItemSlice = createSlice({
 
 const { setMenuItems, changeOneMenuItemReducer, addMenuItem, removeMenuItem } = menuItemSlice.actions
 
-export const initializeMenuItems = () => {
+export const initializeMenuItems = (category: FilterType) => {
   return async (dispatch: Dispatch) => {
     const menuItems = await menuItemService.getAll()
-    dispatch(setMenuItems(menuItems))
+    dispatch(setMenuItems(category === 'ALL' ? menuItems : menuItems.filter(i => i.category.toUpperCase() === category)))
   }
 }
 

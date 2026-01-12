@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { filterChange } from '../../reducers/filterReducer'
 import CafeInput from './CafeInput'
 import { useEffect } from 'react'
+import { Categories } from '../../types'
 
 const VisibilityFilter = () => {
   const dispatch = useDispatch()
@@ -13,25 +14,26 @@ const VisibilityFilter = () => {
 
   return (
     <div>
-      <CafeInput
-        type="radio"
-        name="filter"
-        onChange={() => dispatch(filterChange('ALL'))}
-        defaultChecked
-      />
-      all
-      <CafeInput
-        type="radio"
-        name="filter"
-        onChange={() => dispatch(filterChange('INGREDIENTS'))}
-      />
-      with ingredients
-      <CafeInput
-        type="radio"
-        name="filter"
-        onChange={() => dispatch(filterChange('NOINGREDIENTS'))}
-      />
-      without ingredients
+      <label>
+        all
+        <CafeInput
+          type="radio"
+          name="filter"
+          onChange={() => dispatch(filterChange('ALL'))}
+          defaultChecked
+        />
+      </label>
+      
+      {Categories.map((v, i) => 
+        <label key={i}>
+          {v.toLowerCase()}
+          <CafeInput
+            type="radio"
+            name="filter"
+            onChange={() => dispatch(filterChange(v))}
+          />
+        </label>
+      )}
     </div>
   )
 }
