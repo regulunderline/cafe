@@ -1,11 +1,8 @@
-POST http://localhost:3001/api/menuItems
+PUT http://localhost:3001/api/menus/1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlZ3VsIiwiaWQiOjMsInNlc3Npb25JZCI6NSwiaWF0IjoxNzY0MzM2ODQ2fQ.djgbk_HWji1DYhRbk9uMgiM8tzzXkB8zG62jwOT6L50
 
 {
-  "name": "salmon",
-  "price": 200,
-  "weight": 250,
-  "category": "main",
-  "ingredients": ["salmon", "lemon"]
+  "idsToDelete": [4],
+  "ids": [12]
 }

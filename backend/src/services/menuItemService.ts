@@ -13,7 +13,7 @@ import { MenuItem } from '../models/'
 // })
 
 const getMenuItems = async (): Promise<MenuItem[]> => {
-  const menuItemsFound = await MenuItem.findAll({raw: true})
+  const menuItemsFound = await MenuItem.findAll({ raw: true })
   return menuItemsFound
 }
 

@@ -13,3 +13,11 @@ export const isArrayOfStrings = (array: unknown[], maxLength?: number): array is
     return true
   }
 }
+
+export const isArrayOfNumbers = (array: unknown[]): array is number[] => {
+  if(array.every(i => (!isNumber(i)))){
+    return false
+  } else {
+    return true
+  }
+}

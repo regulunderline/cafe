@@ -5,13 +5,13 @@ import { PORT } from './src/utils/config'
 
 import menuItemsRouter from './src/routes/menuItems' 
 import userRouter from './src/routes/users'
-import loginRouter from './src/routes/login' 
+import loginRouter from './src/routes/login'
+import menuRouter from './src/routes/menus'
 
 import { connectToDatabase } from './src/utils/db'
 
 const app = express()
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 app.use(cors())
 app.use(express.json())
 
@@ -23,6 +23,7 @@ app.get('/api/ping', (_req, res) => {
 app.use('/api/menuItems', menuItemsRouter)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
+app.use('/api/menus', menuRouter)
 
 const start = async () => {
   await connectToDatabase()
