@@ -17,6 +17,22 @@ router.get('/', async (_req, res: Response<Menu[]>) => {
   res.send(menuItems)
 })
 
+router.get('/search', async (req, res: Response<Menu>) => {
+  if(!(
+    req.query.date
+    && isString(req.query.date)
+  )){
+    throw new Error('you can only search by date', { cause: 400 })
+  }
+  const menu = await menuService.findByDate(req.query.date)
+
+  if(menu) { 
+    res.send(menu)
+  } else {
+    throw new Error('menu not found', { cause: 404 })
+  }
+})
+
 router.get('/:id', async (req, res: Response<Menu>) => {
   const menu = await menuService.findById(Number(req.params.id))
 

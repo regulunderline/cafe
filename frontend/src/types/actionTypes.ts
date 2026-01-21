@@ -1,5 +1,5 @@
 import type { UnknownAction } from "redux"
-import type { FilterType, FrontEndUser, MenuItemType, NonSensetiveUser, Notification } from "."
+import type { FilterType, FrontEndUser, FullMenuType, MenuItemType, MenuType, NonSensetiveUser, Notification } from "."
 
 export interface NewMenuItemAction extends UnknownAction {
   type: string,
@@ -10,7 +10,6 @@ export interface SetMenuItemsAction extends UnknownAction {
   type: string,
   payload: MenuItemType[]
 }
-
 
 export interface RemoveMenuItemAction extends UnknownAction {
   type: string,
@@ -23,6 +22,28 @@ export interface ChangeOneMenuItemAction extends UnknownAction {
 }
 
 export type MenuItemAction = NewMenuItemAction | SetMenuItemsAction | ChangeOneMenuItemAction | RemoveMenuItemAction
+
+
+export interface NewMenuAction extends UnknownAction {
+  type: string,
+  payload: MenuType
+}
+
+export interface SetMenusAction extends UnknownAction {
+  type: string,
+  payload: MenuType[]
+}
+
+export interface RemoveMenuAction extends UnknownAction {
+  type: string,
+  payload: number
+}
+
+export interface SetMenuAction extends UnknownAction {
+  type: string,
+  payload: FullMenuType | null
+}
+
 
 export interface SetLoggedInUserAction extends UnknownAction {
   type: string,

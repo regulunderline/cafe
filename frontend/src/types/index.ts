@@ -13,6 +13,20 @@ export type NewMenuItem = Omit<MenuItemType, 'id'>
 
 export type MenuItemEntries = Partial<NewMenuItem>
 
+export interface MenuType {
+  id: number
+  date: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface MenuUpdateInfo {
+  ids?: number[]
+  idsToDelete?: number[]
+}
+
+export type FullMenuType = MenuType & { menuItems: MenuItemType[] }
+
 export interface UserType {
   id: number
   username: string

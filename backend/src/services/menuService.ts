@@ -1,18 +1,26 @@
 import { Menu, MenuItem } from '../models/'
 
 const getMenus = async (): Promise<Menu[]> => {
-  const menusFound = await Menu.findAll({
+  const menusFound = await Menu.findAll({})
+  return menusFound
+}
+
+const findById = async (id: number): Promise<Menu | null> => {
+  const menu = await Menu.findByPk(id, {
     include: {
       model: MenuItem,
       as: 'menuItems',
       through: { attributes: [] }
     }
   })
-  return menusFound
+  return menu
 }
 
-const findById = async (id: number): Promise<Menu | null> => {
-  const menu = await Menu.findByPk(id, {
+const findByDate = async (date: string): Promise<Menu | null> => {
+  const menu = await Menu.findOne({
+    where: {
+      date
+    },
     include: {
       model: MenuItem,
       as: 'menuItems',
@@ -38,6 +46,7 @@ const deleteMenu = async (id: number) => {
 export default {
   getMenus,
   findById,
+  findByDate,
   addMenu,
   deleteMenu
 }

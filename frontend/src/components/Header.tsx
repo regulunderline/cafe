@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
-import type { ReducerState } from "../types"
+import type { StoreState  } from "../store"
 
 const Header = () => {
-    const user = useSelector((state: ReducerState) => state.user)
+    const user = useSelector((state: StoreState) => state.user)
 
   const padding = {
     padding: 5
@@ -13,6 +13,7 @@ const Header = () => {
   return (
     <div>
     <Link style={padding} to="/menuItems">Menu Items</Link>
+    <Link style={padding} to="/menus">Menus</Link>
     <Link style={padding} to="/users">users</Link>
     {user
       ? <Link style={padding} to="/profile">profile</Link>
