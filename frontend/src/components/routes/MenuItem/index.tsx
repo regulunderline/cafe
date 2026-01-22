@@ -33,7 +33,7 @@ const MenuItem = () => {
       event.preventDefault()
       if(!window.confirm(`delete ${menuItem.name}? (no undo)`))return
 
-      const success = dispatch(deleteOneMenuItem(menuItem.id, loggedInUser.token) as unknown as UnknownAction)
+      const success = dispatch(deleteOneMenuItem(menuItem.id, loggedInUser ? loggedInUser.token : '') as unknown as UnknownAction)
       if(success){
         navigate('/')
       }

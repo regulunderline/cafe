@@ -8,7 +8,7 @@ import { AxiosError } from "axios"
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: localStorage.getItem('loggedCafeUser') ? JSON.parse(localStorage.getItem('loggedCafeUser') as string) : null as FrontEndUser | null,
+  initialState: (localStorage.getItem('loggedCafeUser') ? JSON.parse(localStorage.getItem('loggedCafeUser') as string) : null) as FrontEndUser | null,
   reducers: {
     setUser(_state, action: SetLoggedInUserAction) {
       window.localStorage.setItem(

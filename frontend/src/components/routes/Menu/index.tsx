@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom"
 
 import { setMenuById } from "../../../reducers/menuReducer"
 import type { StoreState } from "../../../store"
+import MenuTable from "./MenuTable"
+import AddMenuItem from "./AddMenuItem"
 
 const Menu = () => {
   const id = Number(useParams().id)
@@ -15,36 +17,15 @@ const Menu = () => {
     dispatch(setMenuById(id) as unknown as UnknownAction)
   }, [dispatch, id])
 
-  const menu = useSelector((state: StoreState) => state.menu)
+  const date = useSelector((state: StoreState) => state.menu ? state.menu.date : null)
 
-  if(!menu) return <>menu not found</>
+  if(!date) return <>menu not found</>
 
   return (
     <div>
-      <h1>Menu for {new Date(menu.date).toDateString()}</h1>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>price</th>
-            <th>weight</th>
-            <th>ingredients</th>
-          </tr>
-        </thead>
-        <tbody>
-          {menu.menuItems.map(item => <tr key={item.id}>
-            <td>{item.name}</td>
-            <td>{(item.price / 100).toLocaleString(undefined, {
-              style: 'currency',
-              currency: 'USD',
-            })}</td>
-            <td>{item.weight}</td>
-            <td><ul>
-              {item.ingredients && item.ingredients.map(i => <li key={i}>{i}</li>)}
-            </ul></td>
-          </tr>)}
-        </tbody>
-      </table>
+      <h1>Menu for {new Date(date).toDateString()}</h1>
+      <AddMenuItem id={id} />
+      <MenuTable />
     </div>
   )
 }
